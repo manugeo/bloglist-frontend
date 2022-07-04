@@ -16,7 +16,12 @@ const App = () => {
     }
   }, [setToken]);
 
-  return (user === null) ? <Login setUser={setUser} /> : <Home user={user} />;
+  const logout = () => {
+    window.localStorage.removeItem('loggedBlogAppUser');
+    setUser(null);
+  };
+
+  return (user === null) ? <Login setUser={setUser} /> : <Home user={user} logout={logout} />;
 }
 
 export default App
