@@ -1,5 +1,5 @@
 const Blog = ({blog}) => (
-  <div>
+  <div style={{ marginTop: '20px'}}>
     {blog.title} {blog.author}
   </div>  
 )
