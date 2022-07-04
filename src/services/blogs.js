@@ -20,10 +20,10 @@ const createBlog = async (data = null) => {
   };
   try {
     const response = await axios.post(baseUrl, data, config);
-    return response.data;
+    return { blog: response.data };
   } catch (error) {
     console.log(error?.response?.data || error);
-    return null;
+    return { blog: null, error: error?.response?.data?.error || 'Failed to create new blog!'};
   }
 };
 

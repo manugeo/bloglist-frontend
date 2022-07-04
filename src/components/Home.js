@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Blog from './Blog';
 import blogsService from '../services/blogs';
 const Home = ({ user = null, logout = () => { } }) => {
+  const [notificationMessage, setNotificationMessage] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -13,12 +14,20 @@ const Home = ({ user = null, logout = () => { } }) => {
     }
   }, [user, getAll]);
 
+  const showNotification = (message) => {
+    setNotificationMessage(message);
+    setTimeout(() => {setNotificationMessage(null)}, 3000);
+  };
+
   const handleCreate = async (e) => {
     e.preventDefault();
-    const newBlog = await createBlog({ title, author, url });
-    if (newBlog !== null) {
-      setBlogs([...blogs, newBlog]);
-    }
+    const { blog, error } = await createBlog({ title, author, url });
+    if (blog === null) {
+      showNotification(error);
+    } else {
+      setBlogs([...blogs, blog]);
+      showNotification("Blog created successfully!");
+    };
   };
 
   return (
@@ -30,6 +39,7 @@ const Home = ({ user = null, logout = () => { } }) => {
           <button type='button' onClick={logout}>log-out</button>
         </>
       )}
+      {notificationMessage && <p>{notificationMessage}</p>}
       <h2>Create new blog</h2>
       <form onSubmit={handleCreate}>
         <div>
