@@ -6,7 +6,7 @@ const Home = ({ user = null, logout = () => { } }) => {
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [isCreateVisible, setIsCreateVisible] = useState(false);
-  const { getAll } = blogsService;
+  const { getAll, updateBlogById } = blogsService;
   useEffect(() => {
     if (user !== null) {
       getAll().then(blogs => setBlogs(blogs));
@@ -19,6 +19,27 @@ const Home = ({ user = null, logout = () => { } }) => {
   };
 
   const addNewBlog = (blog) => setBlogs([...blogs, blog]);
+  const handleBlogLike = async (blogToLike) => {
+    const { id, likes } = blogToLike || {};
+    setBlogs(blogs.map(blog => {
+      blog.isLiking = (blog.id === id);
+      return blog;
+    }));
+    const response = await updateBlogById(id, { likes: (likes + 1) });
+    if (response.blog === null) {
+      setNotificationMessage(response.error);
+      setBlogs(blogs.map(blog => {
+        blog.isLiking = false;
+        return blog;
+      }));
+    } else {
+      const likedBlog = response.blog;
+      setBlogs(blogs.map(blog => (blog.id === likedBlog.id) ? likedBlog : blog));
+    }
+    if (response && (response.blog !== null)) {
+
+    }
+  };
 
   return (
     <div>
@@ -33,7 +54,7 @@ const Home = ({ user = null, logout = () => { } }) => {
       {!isCreateVisible
         ? <div><button type='button' onClick={() => setIsCreateVisible(true)}>Create new</button></div>
         : <CreateBlog showNotification={showNotification} onCreateSuccess={addNewBlog} setIsCreateVisible={setIsCreateVisible} />}
-      {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+      {blogs.map(blog => <Blog key={blog.id} blog={blog} onLike={() => handleBlogLike(blog)} />)}
     </div>
   );
 };

@@ -6,9 +6,9 @@ const blogStyle = {
   borderWidth: 1,
   marginBottom: 5
 }
-const Blog = ({ blog }) => {
+const Blog = ({ blog, onLike }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { title, author, url, likes, user } = blog || {};
+  const { title, author, url, likes, user, isLiking } = blog || {};
 
   return (
     <div style={blogStyle}>
@@ -17,7 +17,7 @@ const Blog = ({ blog }) => {
       {isExpanded && (
         <>
           <p>{url}</p>
-          <p>likes {likes} <button onClick={() => { }}>like</button></p>
+          <p>likes {likes} <button onClick={onLike} disabled={isLiking}>{isLiking ? 'liking...' : 'like'}</button></p>
           <p>{user.name}</p>
         </>
       )}

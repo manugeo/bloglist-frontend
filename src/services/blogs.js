@@ -11,7 +11,11 @@ const getAll = async () => {
     headers: { Authorization: token }
   };
   const response = await axios.get(baseUrl, config);
-  return response.data;
+  const blogs = response.data.map(data => {
+    data.isLiking = false;
+    return data;
+  });
+  return blogs;
 }
 
 const createBlog = async (data = null) => {
@@ -27,5 +31,22 @@ const createBlog = async (data = null) => {
   }
 };
 
-const blogsService = { getAll, createBlog, setToken };
+const updateBlogById = async (id, data = null) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+
+  console.log('Updating blog by id :', id, data);
+
+  try {
+    const response = await axios.put(`${baseUrl}/${id}`, data, config);
+    const updatedBlog = response.data ? { ...response.data, isLiking: false } : null;
+    return { blog: updatedBlog };
+  } catch (error) {
+    console.log(error?.response?.data || error);
+    return { blog: null, error: error?.response?.data?.error || 'Failed to update the blog!'};
+  }
+};
+
+const blogsService = { setToken, getAll, createBlog, updateBlogById };
 export default blogsService;
