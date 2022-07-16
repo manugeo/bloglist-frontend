@@ -41,6 +41,12 @@ const Home = ({ user = null, logout = () => { } }) => {
     }
   };
 
+  // Note: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#parameters
+  const compareBlogLikes = (a, b) => {
+    if (a.likes === b.likes) return 0;
+    return (a.likes > b.likes) ? -1 : 1;
+  };
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -54,7 +60,7 @@ const Home = ({ user = null, logout = () => { } }) => {
       {!isCreateVisible
         ? <div><button type='button' onClick={() => setIsCreateVisible(true)}>Create new</button></div>
         : <CreateBlog showNotification={showNotification} onCreateSuccess={addNewBlog} setIsCreateVisible={setIsCreateVisible} />}
-      {blogs.map(blog => <Blog key={blog.id} blog={blog} onLike={() => handleBlogLike(blog)} />)}
+      {blogs.sort(compareBlogLikes).map(blog => <Blog key={blog.id} blog={blog} onLike={() => handleBlogLike(blog)} />)}
     </div>
   );
 };
