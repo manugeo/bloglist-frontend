@@ -10,6 +10,10 @@ const Blog = ({ blog, onLike, onRemove }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { title, author, url, likes, user, isLiking } = blog || {};
 
+  const onRemoveClick = () => {
+    if (window.confirm(`Do you want to remvoe "${title}" by ${author} ?`)) onRemove();
+  };
+
   return (
     <div style={blogStyle}>
       {title} {author}
@@ -19,7 +23,7 @@ const Blog = ({ blog, onLike, onRemove }) => {
           <p>{url}</p>
           <p>likes {likes} <button onClick={onLike} disabled={isLiking}>{isLiking ? 'liking...' : 'like'}</button></p>
           <p>{user.name}</p>
-          <button onClick={onRemove}>remove</button>
+          <button onClick={onRemoveClick}>remove</button>
         </>
       )}
     </div>
