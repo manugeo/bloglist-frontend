@@ -6,7 +6,7 @@ const blogStyle = {
   borderWidth: 1,
   marginBottom: 5
 }
-const Blog = ({ blog, onLike }) => {
+const Blog = ({ blog, onLike, onRemove }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { title, author, url, likes, user, isLiking } = blog || {};
 
@@ -19,6 +19,7 @@ const Blog = ({ blog, onLike }) => {
           <p>{url}</p>
           <p>likes {likes} <button onClick={onLike} disabled={isLiking}>{isLiking ? 'liking...' : 'like'}</button></p>
           <p>{user.name}</p>
+          <button onClick={onRemove}>remove</button>
         </>
       )}
     </div>

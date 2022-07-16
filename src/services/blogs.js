@@ -36,17 +36,27 @@ const updateBlogById = async (id, data = null) => {
     headers: { Authorization: token }
   };
 
-  console.log('Updating blog by id :', id, data);
-
   try {
     const response = await axios.put(`${baseUrl}/${id}`, data, config);
     const updatedBlog = response.data ? { ...response.data, isLiking: false } : null;
     return { blog: updatedBlog };
   } catch (error) {
-    console.log(error?.response?.data || error);
     return { blog: null, error: error?.response?.data?.error || 'Failed to update the blog!'};
   }
 };
 
-const blogsService = { setToken, getAll, createBlog, updateBlogById };
+const deleteBlogById = async (id) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+
+  try {
+    await axios.delete(`${baseUrl}/${id}`, config);
+    return { success: true };
+  } catch (error) {
+    return { error: error?.response?.data?.error || 'Failed to delete the blog!'};
+  }
+};
+
+const blogsService = { setToken, getAll, createBlog, updateBlogById, deleteBlogById };
 export default blogsService;

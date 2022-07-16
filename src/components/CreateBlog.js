@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import blogsService from '../services/blogs';
 
-const CreateBlog = ({ showNotification = () => { }, onCreateSuccess = () => { }, setIsCreateVisible = () => { } }) => {
+const CreateBlog = ({ showNotification = () => { }, onCreate = () => { }, setIsCreateVisible = () => { } }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -13,7 +13,7 @@ const CreateBlog = ({ showNotification = () => { }, onCreateSuccess = () => { },
     if (blog === null) {
       showNotification(error);
     } else {
-      onCreateSuccess(blog);
+      onCreate(blog);
       clearForm();
       showNotification("Blog created successfully!");
     };

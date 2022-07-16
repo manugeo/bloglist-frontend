@@ -6,7 +6,7 @@ const Home = ({ user = null, logout = () => { } }) => {
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [isCreateVisible, setIsCreateVisible] = useState(false);
-  const { getAll, updateBlogById } = blogsService;
+  const { getAll, updateBlogById, deleteBlogById } = blogsService;
   useEffect(() => {
     if (user !== null) {
       getAll().then(blogs => setBlogs(blogs));
@@ -36,8 +36,15 @@ const Home = ({ user = null, logout = () => { } }) => {
       const likedBlog = response.blog;
       setBlogs(blogs.map(blog => (blog.id === likedBlog.id) ? likedBlog : blog));
     }
-    if (response && (response.blog !== null)) {
+  };
 
+  const handleBlogRemove = async (blogToRemove) => {
+    const response = await deleteBlogById(blogToRemove.id);
+    if (response.success) {
+      setBlogs(blogs.filter(blog => blog.id !== blogToRemove.id));
+      setNotificationMessage('Blog deleted successfully!');
+    } else {
+      setNotificationMessage(response.error);
     }
   };
 
@@ -59,8 +66,9 @@ const Home = ({ user = null, logout = () => { } }) => {
       {notificationMessage && <p>{notificationMessage}</p>}
       {!isCreateVisible
         ? <div><button type='button' onClick={() => setIsCreateVisible(true)}>Create new</button></div>
-        : <CreateBlog showNotification={showNotification} onCreateSuccess={addNewBlog} setIsCreateVisible={setIsCreateVisible} />}
-      {blogs.sort(compareBlogLikes).map(blog => <Blog key={blog.id} blog={blog} onLike={() => handleBlogLike(blog)} />)}
+        : <CreateBlog showNotification={showNotification} onCreate={addNewBlog} setIsCreateVisible={setIsCreateVisible} />}
+      {blogs.sort(compareBlogLikes).map(blog => <Blog key={blog.id} blog={blog} onLike={() => handleBlogLike(blog)}
+       onRemove={() => handleBlogRemove(blog)} />)}
     </div>
   );
 };
