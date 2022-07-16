@@ -22,6 +22,6 @@ const App = () => {
   };
 
   return (user === null) ? <Login setUser={setUser} /> : <Home user={user} logout={logout} />;
-}
+};
 
-export default App
+export default App;

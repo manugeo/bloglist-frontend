@@ -5,7 +5,7 @@ const blogStyle = {
   border: 'solid',
   borderWidth: 1,
   marginBottom: 5
-}
+};
 const Blog = ({ blog, onLike, onRemove }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { title, author, url, likes, user, isLiking } = blog || {};

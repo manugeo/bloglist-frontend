@@ -2,7 +2,7 @@ import { useState } from 'react';
 import loginService from '../services/login';
 import blogService from '../services/blogs';
 
-const Login = ({ setUser = () => {}}) => {
+const Login = ({ setUser = () => { } }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { login } = loginService;
@@ -19,7 +19,7 @@ const Login = ({ setUser = () => {}}) => {
       setPassword('');
     }
   };
-  
+
   return (
     <div>
       <h2>Log in to application</h2>

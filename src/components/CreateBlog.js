@@ -15,8 +15,8 @@ const CreateBlog = ({ showNotification = () => { }, onCreate = () => { }, setIsC
     } else {
       onCreate(blog);
       clearForm();
-      showNotification("Blog created successfully!");
-    };
+      showNotification('Blog created successfully!');
+    }
   };
 
   const clearForm = () => {

@@ -1,5 +1,5 @@
-import axios from 'axios'
-const baseUrl = '/api/blogs'
+import axios from 'axios';
+const baseUrl = '/api/blogs';
 
 let token = null;
 const setToken = (t) => {
@@ -16,7 +16,7 @@ const getAll = async () => {
     return data;
   });
   return blogs;
-}
+};
 
 const createBlog = async (data = null) => {
   const config = {
@@ -26,8 +26,7 @@ const createBlog = async (data = null) => {
     const response = await axios.post(baseUrl, data, config);
     return { blog: response.data };
   } catch (error) {
-    console.log(error?.response?.data || error);
-    return { blog: null, error: error?.response?.data?.error || 'Failed to create new blog!'};
+    return { blog: null, error: error?.response?.data?.error || 'Failed to create new blog!' };
   }
 };
 
@@ -41,7 +40,7 @@ const updateBlogById = async (id, data = null) => {
     const updatedBlog = response.data ? { ...response.data, isLiking: false } : null;
     return { blog: updatedBlog };
   } catch (error) {
-    return { blog: null, error: error?.response?.data?.error || 'Failed to update the blog!'};
+    return { blog: null, error: error?.response?.data?.error || 'Failed to update the blog!' };
   }
 };
 
@@ -54,7 +53,7 @@ const deleteBlogById = async (id) => {
     await axios.delete(`${baseUrl}/${id}`, config);
     return { success: true };
   } catch (error) {
-    return { error: error?.response?.data?.error || 'Failed to delete the blog!'};
+    return { error: error?.response?.data?.error || 'Failed to delete the blog!' };
   }
 };
 

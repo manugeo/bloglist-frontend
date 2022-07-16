@@ -15,7 +15,7 @@ const Home = ({ user = null, logout = () => { } }) => {
 
   const showNotification = (message) => {
     setNotificationMessage(message);
-    setTimeout(() => { setNotificationMessage(null) }, 3000);
+    setTimeout(() => { setNotificationMessage(null); }, 3000);
   };
 
   const addNewBlog = (blog) => setBlogs([...blogs, blog]);
@@ -68,7 +68,7 @@ const Home = ({ user = null, logout = () => { } }) => {
         ? <div><button type='button' onClick={() => setIsCreateVisible(true)}>Create new</button></div>
         : <CreateBlog showNotification={showNotification} onCreate={addNewBlog} setIsCreateVisible={setIsCreateVisible} />}
       {blogs.sort(compareBlogLikes).map(blog => <Blog key={blog.id} blog={blog} onLike={() => handleBlogLike(blog)}
-       onRemove={() => handleBlogRemove(blog)} />)}
+        onRemove={() => handleBlogRemove(blog)} />)}
     </div>
   );
 };
