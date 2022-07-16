@@ -14,8 +14,15 @@ const CreateBlog = ({ showNotification = () => { }, onCreateSuccess = () => { },
       showNotification(error);
     } else {
       onCreateSuccess(blog);
+      clearForm();
       showNotification("Blog created successfully!");
     };
+  };
+
+  const clearForm = () => {
+    setTitle('');
+    setAuthor('');
+    setUrl('');
   };
 
   return (
