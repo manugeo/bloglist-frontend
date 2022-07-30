@@ -1,5 +1,12 @@
 describe('Blog List App', () => {
   beforeEach(() => {
+    cy.request('POST', 'http://localhost:3003/api/testing/reset');
+    const user = {
+      name: 'Tester Manu',
+      username: 'manugeo',
+      password: '09946994959'
+    };
+    cy.request('POST', 'http://localhost:3003/api/users', user);
     cy.visit('http://localhost:3000');
   });
 
@@ -11,7 +18,7 @@ describe('Blog List App', () => {
     cy.get('#username').type('manugeo');
     cy.get('#password').type('09946994959');
     cy.get('#login-button').click();
-    cy.contains('Manu Thomas logged-in');
+    cy.contains('Tester Manu logged-in');
   });
 
   it('Invalid user cannot', () => {
