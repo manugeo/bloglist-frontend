@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import Blog from './Blog';
 import CreateBlog from './CreateBlog';
 import blogsService from '../services/blogs';
-const Home = ({ user = null, logout = () => { } }) => {
-  const [notificationMessage, setNotificationMessage] = useState(null);
+const Home = ({ user = null, notificationMessage = null, showNotification = () => {}, logout = () => { } }) => {
   const [blogs, setBlogs] = useState([]);
   const [isCreateVisible, setIsCreateVisible] = useState(false);
   const { getAll, updateBlogById, deleteBlogById } = blogsService;
@@ -12,11 +11,6 @@ const Home = ({ user = null, logout = () => { } }) => {
       getAll().then(blogs => setBlogs(blogs));
     }
   }, [user, getAll]);
-
-  const showNotification = (message) => {
-    setNotificationMessage(message);
-    setTimeout(() => { setNotificationMessage(null); }, 3000);
-  };
 
   const addNewBlog = (blog) => setBlogs([...blogs, blog]);
   const handleBlogLike = async (blogToLike) => {
@@ -27,7 +21,7 @@ const Home = ({ user = null, logout = () => { } }) => {
     }));
     const response = await updateBlogById(id, { likes: (likes + 1) });
     if (response.blog === null) {
-      setNotificationMessage(response.error);
+      showNotification(response.error);
       setBlogs(blogs.map(blog => {
         blog.isLiking = false;
         return blog;
@@ -42,9 +36,9 @@ const Home = ({ user = null, logout = () => { } }) => {
     const response = await deleteBlogById(blogToRemove.id);
     if (response.success) {
       setBlogs(blogs.filter(blog => blog.id !== blogToRemove.id));
-      setNotificationMessage('Blog deleted successfully!');
+      showNotification('Blog deleted successfully!');
     } else {
-      setNotificationMessage(response.error);
+      showNotification(response.error);
     }
   };
 

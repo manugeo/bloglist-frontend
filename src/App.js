@@ -5,6 +5,7 @@ import blogService from './services/blogs';
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [notificationMessage, setNotificationMessage] = useState(null);
   const { setToken } = blogService;
 
   useEffect(() => {
@@ -16,12 +17,19 @@ const App = () => {
     }
   }, [setToken]);
 
+  const showNotification = (message) => {
+    setNotificationMessage(message);
+    setTimeout(() => { setNotificationMessage(null); }, 3000);
+  };
+
   const logout = () => {
     window.localStorage.removeItem('loggedBlogAppUser');
     setUser(null);
   };
 
-  return (user === null) ? <Login setUser={setUser} /> : <Home user={user} logout={logout} />;
+  return (user === null)
+    ? <Login notificationMessage={notificationMessage} showNotification={showNotification} setUser={setUser} />
+    : <Home user={user} logout={logout} notificationMessage={notificationMessage} showNotification={showNotification} />;
 };
 
 export default App;
