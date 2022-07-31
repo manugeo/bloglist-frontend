@@ -43,10 +43,39 @@ describe('Blog List App', () => {
       cy.get('#create-button').click();
       cy.get('#cancel-button').click();
       cy.contains('Sample Test Note');
-    })
+    });
 
-    // Todo
-    // Make a test which checks that users can like a blog.
-    // Make a test for ensuring that the user who created a blog can delete it.
+    describe('And when a blog already exists', () => {
+      beforeEach(() => {
+        cy.contains('Create new').click();
+        cy.get('#title').type('Sample Test Note');
+        cy.get('#author').type('Sample Tester');
+        cy.get('#url').type('sampleurl.com');
+        cy.get('#create-button').click();
+        cy.get('#cancel-button').click();
+      });
+
+      it('It can be liked', () => {
+        cy.get('#blog-container').contains('view').click();
+        cy.get('#likes-text').invoke('text').then((likesText) => {
+          const initialLikes = parseInt(likesText.split(' ')[1]);
+          console.log('initialLikes :', initialLikes);
+          cy.get('#blog-container').contains('like').click();
+          cy.wait(1000);
+          cy.get('#likes-text').invoke('text').then((newText) => {
+            const newLikes = parseInt(newText.split(' ')[1]);
+            console.log('newLikes :', newLikes);
+            expect(newLikes).to.eq(initialLikes + 1);
+          })
+        });
+      });
+
+      it('It can be removed', () => {
+        cy.get('#blog-container').contains('view').click();
+        cy.get('#blog-container').get('#remove-button').click();
+        cy.contains('Sample Test Note').should('not.exist');
+        cy.contains('Blog deleted successfully!');
+      })
+    });
   });
 });

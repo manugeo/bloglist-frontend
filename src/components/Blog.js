@@ -15,15 +15,15 @@ const Blog = ({ blog, onLike, onRemove }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div id='blog-container' style={blogStyle}>
       {title} {author}
       <button onClick={() => setIsExpanded(!isExpanded)}>{isExpanded ? 'hide' : 'view'}</button>
       {isExpanded && (
         <>
           <p>{url}</p>
-          <p>likes {likes} <button onClick={onLike} disabled={isLiking}>{isLiking ? 'liking...' : 'like'}</button></p>
+          <p id='likes-text'>likes {likes} <button onClick={onLike} disabled={isLiking}>{isLiking ? 'liking...' : 'like'}</button></p>
           <p>{user.name}</p>
-          <button onClick={onRemoveClick}>remove</button>
+          <button id='remove-button' onClick={onRemoveClick}>remove</button>
         </>
       )}
     </div>
