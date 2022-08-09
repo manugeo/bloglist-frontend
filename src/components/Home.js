@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Blog from './Blog';
 import CreateBlog from './CreateBlog';
 import blogsService from '../services/blogs';
+import { isCreateVisibleChange } from '../reducers/isCreateVisibleReducer';
 const Home = ({ user = null, notificationMessage = null, showNotification = () => {}, logout = () => { } }) => {
   const [blogs, setBlogs] = useState([]);
-  const [isCreateVisible, setIsCreateVisible] = useState(false);
+  const dispatch = useDispatch();
+  const isCreateVisible = useSelector(state => state.isCreateVisible);
   const { getAll, updateBlogById, deleteBlogById } = blogsService;
   useEffect(() => {
     if (user !== null) {
@@ -59,8 +62,8 @@ const Home = ({ user = null, notificationMessage = null, showNotification = () =
       )}
       {notificationMessage && <p>{notificationMessage}</p>}
       {!isCreateVisible
-        ? <div><button type='button' onClick={() => setIsCreateVisible(true)}>Create new</button></div>
-        : <CreateBlog showNotification={showNotification} onCreate={addNewBlog} setIsCreateVisible={setIsCreateVisible} />}
+        ? <div><button type='button' onClick={() => dispatch(isCreateVisibleChange(true))}>Create new</button></div>
+        : <CreateBlog showNotification={showNotification} onCreate={addNewBlog} setIsCreateVisible={(isCreateVisible) => dispatch(isCreateVisibleChange(isCreateVisible)) } />}
       {blogs.sort(compareBlogLikes).map(blog => <Blog key={blog.id} blog={blog} onLike={() => handleBlogLike(blog)}
         onRemove={() => handleBlogRemove(blog)} />)}
     </div>

@@ -66,7 +66,7 @@ describe('Blog List App', () => {
             const newLikes = parseInt(newText.split(' ')[1]);
             console.log('newLikes :', newLikes);
             expect(newLikes).to.eq(initialLikes + 1);
-          })
+          });
         });
       });
 
@@ -75,7 +75,7 @@ describe('Blog List App', () => {
         cy.get('#blog-container').get('#remove-button').click();
         cy.contains('Sample Test Note').should('not.exist');
         cy.contains('Blog deleted successfully!');
-      })
+      });
     });
   });
 });
