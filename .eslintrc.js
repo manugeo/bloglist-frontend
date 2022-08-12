@@ -22,20 +22,17 @@ module.exports = {
     "react", "jest", "cypress"
   ],
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
     "quotes": [
-      "error",
+      "warn",
       "single"
     ],
     "semi": [
-      "error",
+      "warn",
       "always"
     ],
     "eqeqeq": "error",
-    "no-trailing-spaces": "error",
+    "no-trailing-spaces": "warn",
+    "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
     "object-curly-spacing": [
       "error", "always"
     ],
