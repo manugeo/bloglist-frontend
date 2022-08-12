@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Login from './components/Login';
 import Home from './components/Home';
+import { showNotification } from './reducers/notificationMessageReducer';
 import blogService from './services/blogs';
 
 const App = () => {
   const [user, setUser] = useState(null);
-  const [notificationMessage, setNotificationMessage] = useState(null);
+  const dispatch = useDispatch();
+  const notificationMessage = useSelector(state => state.notificationMessage);
   const { setToken } = blogService;
 
   useEffect(() => {
@@ -17,9 +20,8 @@ const App = () => {
     }
   }, [setToken]);
 
-  const showNotification = (message) => {
-    setNotificationMessage(message);
-    setTimeout(() => { setNotificationMessage(null); }, 3000);
+  const showNotificationMessage = (message) => {
+    dispatch(showNotification(message));
   };
 
   const logout = () => {
@@ -28,8 +30,8 @@ const App = () => {
   };
 
   return (user === null)
-    ? <Login notificationMessage={notificationMessage} showNotification={showNotification} setUser={setUser} />
-    : <Home user={user} logout={logout} notificationMessage={notificationMessage} showNotification={showNotification} />;
+    ? <Login notificationMessage={notificationMessage} showNotification={showNotificationMessage} setUser={setUser} />
+    : <Home user={user} logout={logout} notificationMessage={notificationMessage} showNotification={showNotificationMessage} />;
 };
 
 export default App;

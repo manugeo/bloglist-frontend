@@ -1,21 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Blog from './Blog';
 import CreateBlog from './CreateBlog';
+import { initializeBlogs } from '../reducers/blogsReducer';
 import blogsService from '../services/blogs';
 import { isCreateVisibleChange } from '../reducers/isCreateVisibleReducer';
-const Home = ({ user = null, notificationMessage = null, showNotification = () => {}, logout = () => { } }) => {
-  const [blogs, setBlogs] = useState([]);
+const Home = ({ user = null, notificationMessage = null, showNotification = () => { }, logout = () => { } }) => {
+  const { isCreateVisible, blogs } = useSelector(state => state);
+
+  // Todo: Update handleBlogLike and handleBlogRemove methods to use the redux store.
+  // Note: These two methods won't work now.
+
+  // const [blogs, setBlogs] = useState([]);
+  const setBlogs = () => { };
+
   const dispatch = useDispatch();
-  const isCreateVisible = useSelector(state => state.isCreateVisible);
   const { getAll, updateBlogById, deleteBlogById } = blogsService;
   useEffect(() => {
     if (user !== null) {
-      getAll().then(blogs => setBlogs(blogs));
+      dispatch(initializeBlogs());
     }
   }, [user, getAll]);
 
-  const addNewBlog = (blog) => setBlogs([...blogs, blog]);
   const handleBlogLike = async (blogToLike) => {
     const { id, likes } = blogToLike || {};
     setBlogs(blogs.map(blog => {
@@ -63,8 +69,8 @@ const Home = ({ user = null, notificationMessage = null, showNotification = () =
       {notificationMessage && <p>{notificationMessage}</p>}
       {!isCreateVisible
         ? <div><button type='button' onClick={() => dispatch(isCreateVisibleChange(true))}>Create new</button></div>
-        : <CreateBlog showNotification={showNotification} onCreate={addNewBlog} setIsCreateVisible={(isCreateVisible) => dispatch(isCreateVisibleChange(isCreateVisible)) } />}
-      {blogs.sort(compareBlogLikes).map(blog => <Blog key={blog.id} blog={blog} onLike={() => handleBlogLike(blog)}
+        : <CreateBlog setIsCreateVisible={(isVisible) => dispatch(isCreateVisibleChange(isVisible))} />}
+      {blogs.slice().sort(compareBlogLikes).map(blog => <Blog key={blog.id} blog={blog} onLike={() => handleBlogLike(blog)}
         onRemove={() => handleBlogRemove(blog)} />)}
     </div>
   );

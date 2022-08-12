@@ -4,10 +4,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import App from './App';
 import isCreateVisibleReducer from './reducers/isCreateVisibleReducer';
+import blogsReducer from './reducers/blogsReducer';
+import notificationMessageReducer from './reducers/notificationMessageReducer';
 
 const store = configureStore({
   reducer: {
-    isCreateVisible: isCreateVisibleReducer
+    isCreateVisible: isCreateVisibleReducer,
+    blogs: blogsReducer,
+    notificationMessage: notificationMessageReducer
   }
 });
 

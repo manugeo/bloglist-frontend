@@ -1,22 +1,17 @@
 import { useState } from 'react';
-import blogsService from '../services/blogs';
+import { useDispatch } from 'react-redux';
+import { createBlog } from '../reducers/blogsReducer';
 
-const CreateBlog = ({ showNotification = () => { }, onCreate = () => { }, setIsCreateVisible = () => { } }) => {
+const CreateBlog = ({ setIsCreateVisible = () => { } }) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
-  const { createBlog } = blogsService;
 
-  const handleCreate = async (e) => {
+  const handleCreate = (e) => {
     e.preventDefault();
-    const { blog, error } = await createBlog({ title, author, url });
-    if (blog === null) {
-      showNotification(error);
-    } else {
-      onCreate(blog);
-      clearForm();
-      showNotification('Blog created successfully!');
-    }
+    dispatch(createBlog({ title, author, url }));
+    clearForm();
   };
 
   const clearForm = () => {
