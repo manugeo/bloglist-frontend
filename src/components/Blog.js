@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { likeBlog } from '../reducers/blogsReducer';
+
 const blogStyle = {
   paddingTop: 10,
   paddingLeft: 2,
@@ -6,10 +9,12 @@ const blogStyle = {
   borderWidth: 1,
   marginBottom: 5
 };
-const Blog = ({ blog, onLike, onRemove }) => {
+const Blog = ({ blog, onRemove }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const dispatch = useDispatch();
   const { title, author, url, likes, user, isLiking } = blog || {};
 
+  const onLike = () => dispatch(likeBlog(blog));
   const onRemoveClick = () => {
     if (window.confirm(`Do you want to remvoe "${title}" by ${author} ?`)) onRemove();
   };

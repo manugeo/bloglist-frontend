@@ -1,12 +1,20 @@
 import blogsService from '../services/blogs';
 import { showNotification } from './notificationMessageReducer';
 
+const { getAll, createBlog: createBlogService, updateBlogById } = blogsService;
+
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET_BLOGS':
       return [...action.blogs];
-      case 'ADD_BLOG':
-        return [...state, action.blog];
+    case 'ADD_BLOG':
+      return [...state, action.blog];
+    case 'REPLACE_BLOG':
+      return state.map(blog => (blog.id === action.blog.id) ? action.blog : blog);
+    case 'SET_BLOG_IS_LIKING':
+      return state.map(blog => {
+        return (blog.id === action.blog.id) ? { ...blog, isLiking: action.isLiking } : blog;
+      });
     default:
       return state;
   }
@@ -19,20 +27,35 @@ const blogsReducer = (state = [], action) => {
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
-    const blogs = await blogsService.getAll();
+    const blogs = await getAll();
     dispatch({ type: 'SET_BLOGS', blogs });
   };
 };
 
 export const createBlog = ({ title, author, url }) => {
   return async (dispatch) => {
-    const { blog, error } = await blogsService.createBlog({ title, author, url });
+    const { blog, error } = await createBlogService({ title, author, url });
     if (blog === null) {
       dispatch(showNotification(error));
     } else {
       dispatch({ type: 'ADD_BLOG', blog });
       // clearForm();
       dispatch(showNotification('Blog created successfully!'));
+    }
+  };
+};
+
+export const likeBlog = (blogToLike) => {
+  return async (dispatch) => {
+    const { id, likes } = blogToLike || {};
+    dispatch({ type: 'SET_BLOG_IS_LIKING', blog: blogToLike, isLiking: true });
+    const response = await updateBlogById(id, { likes: (likes + 1) });
+    if (response.blog === null) {
+      showNotification(response.error);
+      dispatch({ type: 'SET_BLOG_IS_LIKING', blog: blogToLike, isLiking: false });
+    } else {
+      const likedBlog = response.blog;
+      dispatch({ type: 'REPLACE_BLOG', blog: likedBlog });
     }
   };
 };
