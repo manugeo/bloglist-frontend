@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { likeBlog } from '../reducers/blogsReducer';
+import { likeBlog, removeBlog } from '../reducers/blogsReducer';
 
 const blogStyle = {
   paddingTop: 10,
@@ -9,14 +9,14 @@ const blogStyle = {
   borderWidth: 1,
   marginBottom: 5
 };
-const Blog = ({ blog, onRemove }) => {
+const Blog = ({ blog }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
   const { title, author, url, likes, user, isLiking } = blog || {};
 
   const onLike = () => dispatch(likeBlog(blog));
-  const onRemoveClick = () => {
-    if (window.confirm(`Do you want to remvoe "${title}" by ${author} ?`)) onRemove();
+  const onRemove = () => {
+    if (window.confirm(`Do you want to remvoe "${title}" by ${author} ?`)) dispatch(removeBlog(blog));
   };
 
   return (
@@ -28,7 +28,7 @@ const Blog = ({ blog, onRemove }) => {
           <p>{url}</p>
           <p id='likes-text'>likes {likes} <button onClick={onLike} disabled={isLiking}>{isLiking ? 'liking...' : 'like'}</button></p>
           <p>{user.name}</p>
-          <button id='remove-button' onClick={onRemoveClick}>remove</button>
+          <button id='remove-button' onClick={onRemove}>remove</button>
         </>
       )}
     </div>

@@ -31,7 +31,7 @@ const App = () => {
 
   return (user === null)
     ? <Login notificationMessage={notificationMessage} showNotification={showNotificationMessage} setUser={setUser} />
-    : <Home user={user} logout={logout} notificationMessage={notificationMessage} showNotification={showNotificationMessage} />;
+    : <Home user={user} logout={logout} notificationMessage={notificationMessage} />;
 };
 
 export default App;

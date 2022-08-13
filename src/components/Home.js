@@ -3,33 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import Blog from './Blog';
 import CreateBlog from './CreateBlog';
 import { initializeBlogs } from '../reducers/blogsReducer';
-import blogsService from '../services/blogs';
 import { isCreateVisibleChange } from '../reducers/isCreateVisibleReducer';
-const Home = ({ user = null, notificationMessage = null, showNotification = () => { }, logout = () => { } }) => {
+const Home = ({ user = null, notificationMessage = null, logout = () => { } }) => {
   const { isCreateVisible, blogs } = useSelector(state => state);
-
-  // Todo: Update handleBlogRemove method to use the redux store.
-
-  // const [blogs, setBlogs] = useState([]);
-  const setBlogs = () => { };
-
   const dispatch = useDispatch();
-  const { deleteBlogById } = blogsService;
+
   useEffect(() => {
     if (user !== null) {
       dispatch(initializeBlogs());
     }
   }, [user]);
 
-  const handleBlogRemove = async (blogToRemove) => {
-    const response = await deleteBlogById(blogToRemove.id);
-    if (response.success) {
-      setBlogs(blogs.filter(blog => blog.id !== blogToRemove.id));
-      showNotification('Blog deleted successfully!');
-    } else {
-      showNotification(response.error);
-    }
-  };
+  // Todo: Might wanna look into this. blog.user changes from object to id after add blog, like blog etc.
 
   // Note: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#parameters
   const compareBlogLikes = (a, b) => {
@@ -50,8 +35,7 @@ const Home = ({ user = null, notificationMessage = null, showNotification = () =
       {!isCreateVisible
         ? <div><button type='button' onClick={() => dispatch(isCreateVisibleChange(true))}>Create new</button></div>
         : <CreateBlog setIsCreateVisible={(isVisible) => dispatch(isCreateVisibleChange(isVisible))} />}
-      {blogs.slice().sort(compareBlogLikes).map(blog => <Blog key={blog.id} blog={blog}
-        onRemove={() => handleBlogRemove(blog)} />)}
+      {blogs.slice().sort(compareBlogLikes).map(blog => <Blog key={blog.id} blog={blog} />)}
     </div>
   );
 };
