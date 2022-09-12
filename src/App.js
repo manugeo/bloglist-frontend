@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import Login from './components/Login';
 import Home from './components/Home';
 import { showNotification } from './reducers/notificationMessageReducer';
-import blogService from './services/blogs';
+import blogsService from './services/blogs';
 
 const App = () => {
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
   const notificationMessage = useSelector(state => state.notificationMessage);
-  const { setToken } = blogService;
+  const { setToken } = blogsService;
 
   useEffect(() => {
     const loggedInUserJson = window.localStorage.getItem('loggedBlogAppUser');
