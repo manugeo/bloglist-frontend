@@ -4,17 +4,17 @@ import Blog from './Blog';
 import CreateBlog from './CreateBlog';
 import { initializeBlogs } from '../reducers/blogsReducer';
 import { isCreateVisibleChange } from '../reducers/isCreateVisibleReducer';
-const Home = ({ user = null, notificationMessage = null, logout = () => { } }) => {
-  const { isCreateVisible, blogs } = useSelector(state => state);
+const Home = ({ logout = () => { } }) => {
+  const { isCreateVisible, blogs, currentUser, notificationMessage } = useSelector(state => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user !== null) {
+    if (currentUser !== null) {
       dispatch(initializeBlogs());
     }
-  }, [user]);
+  }, [currentUser]);
 
-  // Todo: Might wanna look into this. blog.user changes from object to id after add blog, like blog etc.
+  // Todo: Might wanna look into this. blog.currentUser changes from object to id after add blog, like blog etc.
 
   // Note: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#parameters
   const compareBlogLikes = (a, b) => {
@@ -25,9 +25,9 @@ const Home = ({ user = null, notificationMessage = null, logout = () => { } }) =
   return (
     <div>
       <h2>Blogs</h2>
-      {user && (
+      {currentUser && (
         <>
-          <h5>{user.name} logged-in</h5>
+          <h5>{currentUser.name} logged-in</h5>
           <button type='button' onClick={logout}>log-out</button>
         </>
       )}

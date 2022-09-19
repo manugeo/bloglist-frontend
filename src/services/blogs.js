@@ -1,7 +1,7 @@
 import axios from 'axios';
 const baseUrl = '/api/blogs';
 
-let token = null;
+export let token = null;
 const setToken = (t) => {
   token = `bearer ${t}`;
 };

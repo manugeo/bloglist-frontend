@@ -20,7 +20,7 @@ const App = () => {
           </>
           : <>
             <Route path='/users' element={<Users />} />
-            <Route path='/' element={<Home user={currentUser} logout={logout} notificationMessage={notificationMessage} />} />
+            <Route path='/' element={<Home logout={logout} />} />
             <Route path='*' element={<Navigate to={'/'} />} />
           </>}
 
