@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { initializeUsers } from '../reducers/usersReducer';
 
 const Users = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser, notificationMessage, users } = useSelector(state => state);
 
   useEffect(() => {
@@ -11,6 +13,8 @@ const Users = () => {
   }, [users]);
 
   console.log(users);
+
+  const onUserClick = (user) => navigate(`/users/${user.id}`);
 
   return (
     <div>
@@ -28,7 +32,7 @@ const Users = () => {
         </thead>
         <tbody>
           {users.map(user => <tr key={user.id}>
-            <td>{user.name}</td>
+            <td><span style={{ cursor: 'pointer' }} onClick={() => onUserClick(user)}>{user.name}</span></td>
             <td>{user?.blogs?.length || '-'}</td>
           </tr>)}
         </tbody>

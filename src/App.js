@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './components/Login';
 import Home from './components/Home';
 import Users from './components/Users';
+import UserDetails from './components/UserDetails';
 import { logoutUser } from './reducers/currentUserReducer';
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
             <Route path='*' element={<Navigate to={'/login'} />} />
           </>
           : <>
+            <Route path='/users/:id' element={<UserDetails />} />
             <Route path='/users' element={<Users />} />
             <Route path='/' element={<Home logout={logout} />} />
             <Route path='*' element={<Navigate to={'/'} />} />
