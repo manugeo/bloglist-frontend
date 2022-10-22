@@ -6,7 +6,7 @@ import { initializeUsers } from '../reducers/usersReducer';
 const Users = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { currentUser, notificationMessage, users } = useSelector(state => state);
+  const { notificationMessage, users } = useSelector(state => state);
 
   useEffect(() => {
     if (!(users && users.length)) dispatch(initializeUsers());
@@ -18,8 +18,6 @@ const Users = () => {
 
   return (
     <div>
-      <h2>Blogs</h2>
-      {currentUser && <h5>{currentUser.name} logged-in</h5>}
       <h2>Users</h2>
       {notificationMessage && <p>{notificationMessage}</p>}
 

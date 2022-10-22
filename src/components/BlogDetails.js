@@ -32,7 +32,6 @@ const BlogDetails = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <br />
       <div id='blog-container' style={blogStyle}>
         {title} {author}
         <p>{url}</p>

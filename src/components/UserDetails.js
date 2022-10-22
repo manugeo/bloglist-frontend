@@ -21,7 +21,6 @@ const UserDetails = () => {
   return user ? (
     <div>
       <h2>{name}</h2>
-      <br />
       <h4>Added Blogs:</h4>
       {blogs.map((blog, i) => <p key={blog.id}>{`${i + 1}. ${blog.title}`}</p>)}
     </div>

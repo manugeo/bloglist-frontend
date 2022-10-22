@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../reducers/currentUserReducer';
 
-const Login = ({ notificationMessage = '' }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
@@ -15,7 +15,6 @@ const Login = ({ notificationMessage = '' }) => {
   return (
     <div>
       <h2>Log in to application</h2>
-      {notificationMessage && <p>{notificationMessage}</p>}
       <form onSubmit={handleLogin}>
         <div>
           username

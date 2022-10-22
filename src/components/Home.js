@@ -15,8 +15,8 @@ const blogStyle = {
   cursor: 'pointer'
 };
 
-const Home = ({ logout = () => { } }) => {
-  const { isCreateVisible, blogs, currentUser, notificationMessage } = useSelector(state => state);
+const Home = () => {
+  const { isCreateVisible, blogs, currentUser } = useSelector(state => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,13 +39,6 @@ const Home = ({ logout = () => { } }) => {
   return (
     <div>
       <h2>Blogs</h2>
-      {currentUser && (
-        <>
-          <h5>{currentUser.name} logged-in</h5>
-          <button type='button' onClick={logout}>log-out</button>
-        </>
-      )}
-      {notificationMessage && <p>{notificationMessage}</p>}
       {!isCreateVisible
         ? <div><button type='button' onClick={() => dispatch(isCreateVisibleChange(true))}>Create new</button></div>
         : <CreateBlog setIsCreateVisible={(isVisible) => dispatch(isCreateVisibleChange(isVisible))} />}
