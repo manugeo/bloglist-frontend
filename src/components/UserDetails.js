@@ -11,13 +11,20 @@ const UserDetails = () => {
 
   useEffect(() => {
     if (user === null) {
-      // Note: 'navigate' can't be used when component first renders. Instead, it should be in a 'effect'.
+      // Note: 'navigate' can't be used when component first renders. Instead, it should be in an 'effect'.
       navigate('/users');
     }
   }, [user]);
 
+  const { blogs, name } = user;
+
   return user ? (
-    <div>User Details!</div>
+    <div>
+      <h2>{name}</h2>
+      <br />
+      <h4>Added Blogs:</h4>
+      {blogs.map((blog, i) => <p key={blog.id}>{`${i + 1}. ${blog.title}`}</p>)}
+    </div>
   ) : null;
 };
 
