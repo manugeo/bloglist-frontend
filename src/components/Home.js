@@ -1,18 +1,32 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Blog from './Blog';
 import CreateBlog from './CreateBlog';
 import { initializeBlogs } from '../reducers/blogsReducer';
 import { isCreateVisibleChange } from '../reducers/isCreateVisibleReducer';
+import { useNavigate } from 'react-router-dom';
+
+
+const blogStyle = {
+  paddingTop: 10,
+  paddingLeft: 2,
+  border: 'solid',
+  borderWidth: 1,
+  marginBottom: 5,
+  cursor: 'pointer'
+};
+
 const Home = ({ logout = () => { } }) => {
   const { isCreateVisible, blogs, currentUser, notificationMessage } = useSelector(state => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (currentUser !== null) {
       dispatch(initializeBlogs());
     }
   }, [currentUser]);
+
+  const onBlogClick = (blog) => navigate(`/blogs/${blog.id}`, { state: { blog } });
 
   // Todo: Might wanna look into this. blog.currentUser changes from object to id after add blog, like blog etc.
 
@@ -35,7 +49,9 @@ const Home = ({ logout = () => { } }) => {
       {!isCreateVisible
         ? <div><button type='button' onClick={() => dispatch(isCreateVisibleChange(true))}>Create new</button></div>
         : <CreateBlog setIsCreateVisible={(isVisible) => dispatch(isCreateVisibleChange(isVisible))} />}
-      {blogs.slice().sort(compareBlogLikes).map(blog => <Blog key={blog.id} blog={blog} />)}
+      {blogs.slice().sort(compareBlogLikes).map((blog, i) => <p key={blog.id} style={blogStyle} onClick={() => onBlogClick(blog)}>
+        {`${(i + 1)}. ${blog.title}`}
+      </p>)}
     </div>
   );
 };
