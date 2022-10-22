@@ -9,7 +9,7 @@ const blogStyle = {
   borderWidth: 1,
   marginBottom: 5
 };
-const Blog = ({ blog }) => {
+const BlogDetails = ({ blog }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
   const { title, author, url, likes, user, isLiking } = blog || {};
@@ -22,17 +22,12 @@ const Blog = ({ blog }) => {
   return (
     <div id='blog-container' style={blogStyle}>
       {title} {author}
-      <button onClick={() => setIsExpanded(!isExpanded)}>{isExpanded ? 'hide' : 'view'}</button>
-      {isExpanded && (
-        <>
-          <p>{url}</p>
-          <p id='likes-text'>likes {likes} <button onClick={onLike} disabled={isLiking}>{isLiking ? 'liking...' : 'like'}</button></p>
-          <p>{user.name}</p>
-          <button id='remove-button' onClick={onRemove}>remove</button>
-        </>
-      )}
+      <p>{url}</p>
+      <p id='likes-text'>likes {likes} <button onClick={onLike} disabled={isLiking}>{isLiking ? 'liking...' : 'like'}</button></p>
+      <p>{user.name}</p>
+      <button id='remove-button' onClick={onRemove}>remove</button>
     </div>
   );
 };
 
-export default Blog;
+export default BlogDetails;
